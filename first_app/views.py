@@ -1,21 +1,17 @@
-from django.http import HttpResponse
-from django.template import loader
+from operator import index
+from re import template
 from .models import Article
+from django.views import generic
 
-def index(request):
-    template = loader.get_template('index.html')
-    articles = Article.objects.order_by('-created_at')[:5]
-    context = {
-        'articles': articles
-    }
-    return HttpResponse(template.render(context, request))
+class IndexView(generic.ListView):
+    model = Article
+    template_name = 'index.html'
 
-def article(request, article_id):
-    article = Article.objects.get(pk=article_id)
-    template = loader.get_template('article.html')
-    context = {
-        'article': article
-    }
-    return HttpResponse(template.render(context, request))
+    def get_queryset(self):
+        return Article.objects.order_by('-created_at')[:5]
 
+class ArticleView(generic.DetailView):
+    model = Article
+    template_name = 'article.html'
 
+ 
