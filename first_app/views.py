@@ -1,5 +1,4 @@
-from operator import index
-from re import template
+
 from .models import Article
 from django.views import generic
 
